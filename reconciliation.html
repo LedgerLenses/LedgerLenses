@@ -206,7 +206,6 @@
 
                         <div id="imagePreviewContainer" class="absolute inset-0 hidden z-20 bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-2">
                             <div id="scanLine" class="scan-line"></div>
-                            <!-- Embed for PDFs, Img for Images -->
                             <div id="previewWrapper" class="w-full h-full flex items-center justify-center relative"></div>
                             <button onclick="clearDocument(event)" class="absolute top-4 right-4 w-8 h-8 bg-slate-900/80 text-white rounded-md flex items-center justify-center hover:bg-rose-600 transition-colors z-40 shadow-lg">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -338,7 +337,7 @@
             
             reader.onload = function(e) {
                 const wrapper = document.getElementById('previewWrapper');
-                wrapper.innerHTML = ''; // clear
+                wrapper.innerHTML = ''; 
 
                 if (file.type === 'application/pdf') {
                     const embed = document.createElement('embed');
@@ -423,7 +422,11 @@
                     body: formData
                 });
 
-                if (!response.ok) throw new Error("Processing failed on backend");
+                // ADVANCED ERROR INTERCEPTION
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(`Server returned ${response.status}: ${errText}`);
+                }
 
                 const data = await response.json();
 
@@ -457,7 +460,9 @@
             } catch (error) {
                 console.error(error);
                 updateStatus('Extraction Failed', 'bg-rose-100 text-rose-700 border-rose-200 dark:bg-rose-900/40 dark:text-rose-400');
-                alert("System Error: Could not connect to the AI engine. Check CORS or backend logs.");
+                
+                // Show the exact Render/Python error in a browser alert
+                alert("Extraction failed. Error details:\n\n" + error.message + "\n\n(If you see a 500 status code, check the GEMINI_API_KEY in Render Environment Variables)");
             } finally {
                 scanLine.style.display = 'none';
                 btn.disabled = false;
