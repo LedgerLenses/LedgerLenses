@@ -31,18 +31,16 @@
     </script>
 
     <style>
-        :root { --bg: #f8fafc; } /* Slate 50 */
-        .dark { --bg: #0f172a; } /* Slate 900 */
+        :root { --bg: #f8fafc; } 
+        .dark { --bg: #0f172a; } 
         body { margin: 0; background: var(--bg); color: #0f172a; }
         .dark body { color: #f8fafc; }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #334155; }
 
-        /* Subtle mesh background */
         .bg-mesh {
             position: fixed; inset: 0; z-index: -5;
             background-image: 
@@ -55,7 +53,6 @@
                 radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.12) 0px, transparent 50%);
         }
 
-        /* Glassy Panels */
         .panel {
             background: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(226, 232, 240, 0.8);
@@ -69,16 +66,13 @@
             box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.4);
         }
 
-        /* Interactive KPI Cards */
         .kpi-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
         .kpi-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -8px rgba(99, 102, 241, 0.15); border-color: #c7d2fe; }
         .dark .kpi-card:hover { box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5); border-color: #4f46e5; }
         .kpi-active { border-color: #6366f1 !important; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important; }
 
-        /* Pure CSS Donut Chart */
         .donut-ring { fill: transparent; stroke-width: 14; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; }
 
-        /* Auth Gate Overlay */
         #authGate {
             position: fixed; inset: 0; z-index: 9999;
             background: rgba(248, 250, 252, 0.95);
@@ -108,7 +102,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Work Email</label>
-                    <input type="email" value="accountant@ledgerlenses.in" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all">
+                    <input type="email" value="sravani.m@ledgerlenses.in" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Password</label>
@@ -121,14 +115,22 @@
         </div>
     </div>
 
+    <!-- MOBILE OVERLAY -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
+
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col z-20 shrink-0">
-        
-        <div class="h-16 flex items-center px-6 border-b border-slate-100 dark:border-slate-800">
-            <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-brand-700 rounded-lg flex items-center justify-center mr-2.5 shadow-sm shadow-brand-500/20">
-                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 lg:relative transition-transform duration-300 ease-in-out">
+        <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100 dark:border-slate-800">
+            <div class="flex items-center">
+                <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-brand-700 rounded-lg flex items-center justify-center mr-2.5 shadow-sm shadow-brand-500/20">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                </div>
+                <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">LedgerLenses</span>
             </div>
-            <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">LedgerLenses</span>
+            <!-- Mobile Close Button -->
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
         </div>
 
         <div class="flex-1 overflow-y-auto py-6 px-4 space-y-1.5">
@@ -149,13 +151,13 @@
                 <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 flex items-center justify-center text-[10px] font-bold">2</span>
             </a>
 
-            <!-- 3. The Archive (INACTIVE) -->
+            <!-- 3. The Archive -->
             <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 Document Ledger
             </a>
-
-            <!-- 4. Security/Compliance (INACTIVE) -->
+            
+            <!-- 4. Security/Compliance -->
             <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Audit Trail
@@ -165,12 +167,16 @@
         <div class="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300">
-                    CA
+                    SM
                 </div>
                 <div class="flex-1">
-                    <p class="text-xs font-bold text-slate-900 dark:text-slate-100">Vivek S.</p>
-                    <p class="text-[10px] text-brand-600 dark:text-brand-400 font-semibold uppercase tracking-wider">Chartered Accountant</p>
+                    <p class="text-xs font-bold text-slate-900 dark:text-slate-100">Sravani M.</p>
+                    <p class="text-[10px] text-brand-600 dark:text-brand-400 font-semibold uppercase tracking-wider">Accountant</p>
                 </div>
+                <!-- Logout Button -->
+                <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-500 transition-colors ml-auto p-1" title="Log Out">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                </button>
             </div>
         </div>
     </aside>
@@ -178,14 +184,19 @@
     <!-- MAIN WORKSPACE -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
         
-        <header class="h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
-            <div class="relative w-96">
-                <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="text" placeholder="Search invoices, GSTINs, or vendors..." class="w-full bg-slate-100/80 dark:bg-slate-800/80 border-none rounded-lg pl-10 pr-4 py-2 text-xs focus:ring-2 focus:ring-brand-500/30 outline-none text-slate-700 dark:text-slate-300 transition-shadow">
+        <header class="h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-8 shrink-0">
+            <div class="flex items-center gap-3 w-full max-w-md">
+                <!-- Hamburger Menu -->
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div class="relative w-full">
+                    <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" placeholder="Search invoices..." class="w-full bg-slate-100/80 dark:bg-slate-800/80 border-none rounded-lg pl-10 pr-4 py-2 text-xs focus:ring-2 focus:ring-brand-500/30 outline-none text-slate-700 dark:text-slate-300 transition-shadow">
+                </div>
             </div>
             
-            <div class="flex items-center gap-3">
-                <span class="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-200 dark:border-emerald-800">System Online</span>
+            <div class="flex items-center gap-2">
                 <button onclick="toggleTheme()" class="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
                     <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                     <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
@@ -193,20 +204,19 @@
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6">
             
-            <div class="flex items-end justify-between mb-2">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-2">
                 <div>
                     <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Operations Overview</h1>
                     <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Review flagged AI extractions and approve pending tax disbursements.</p>
                 </div>
-                <!-- ROUTING UPDATED HERE -->
-                <button onclick="window.location.href='reconciliation.html'" class="px-5 py-2.5 rounded-lg bg-slate-900 dark:bg-brand-600 hover:bg-slate-800 dark:hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-md flex items-center gap-2">
+                <button onclick="window.location.href='reconciliation.html'" class="px-5 py-2.5 rounded-lg bg-slate-900 dark:bg-brand-600 hover:bg-slate-800 dark:hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-md flex items-center justify-center gap-2 w-full sm:w-auto">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> New Extraction
                 </button>
             </div>
 
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div class="panel p-5 kpi-card flex flex-col justify-between h-32">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Volume</span>
@@ -243,7 +253,7 @@
                         <div class="w-7 h-7 rounded-md bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
                     </div>
                     <div>
-                        <span class="text-2xl font-bold text-slate-900 dark:text-white font-mono tracking-tight">₹ 34,50,000</span>
+                        <span class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-mono tracking-tight">₹ 34,50,000</span>
                         <p class="text-[10px] font-bold text-emerald-600 dark:text-emerald-500 mt-1">Approved for ledger</p>
                     </div>
                 </div>
@@ -268,7 +278,7 @@
                             <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Avg Acc</span>
                         </div>
                     </div>
-                    <div class="flex items-center justify-center gap-5 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-5 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                         <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-[10px] font-bold text-slate-500">High Confidence</span></div>
                         <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="text-[10px] font-bold text-slate-500">Needs Review</span></div>
                         <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="text-[10px] font-bold text-slate-500">Flagged</span></div>
@@ -282,15 +292,15 @@
                     </div>
                     <div class="flex flex-col justify-center space-y-4 mt-8 pl-16 border-l border-slate-200 dark:border-slate-700">
                         <div class="relative w-full">
-                            <span class="absolute -left-20 top-1 text-[9px] font-bold text-slate-500 w-16 text-right uppercase tracking-wider">Approved</span>
+                            <span class="absolute -left-16 top-1 text-[9px] font-bold text-slate-500 w-14 text-right uppercase tracking-wider">Approved</span>
                             <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div class="bg-emerald-500 h-full rounded" style="width: 75%"></div></div>
                         </div>
                         <div class="relative w-full">
-                            <span class="absolute -left-20 top-1 text-[9px] font-bold text-slate-500 w-16 text-right uppercase tracking-wider">Pending</span>
+                            <span class="absolute -left-16 top-1 text-[9px] font-bold text-slate-500 w-14 text-right uppercase tracking-wider">Pending</span>
                             <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div class="bg-amber-500 h-full rounded" style="width: 15%"></div></div>
                         </div>
                         <div class="relative w-full">
-                            <span class="absolute -left-20 top-1 text-[9px] font-bold text-slate-500 w-16 text-right uppercase tracking-wider">Rejected</span>
+                            <span class="absolute -left-16 top-1 text-[9px] font-bold text-slate-500 w-14 text-right uppercase tracking-wider">Rejected</span>
                             <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div class="bg-rose-500 h-full rounded" style="width: 5%"></div></div>
                         </div>
                     </div>
@@ -298,7 +308,7 @@
             </div>
 
             <div class="panel overflow-hidden">
-                <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/20">
+                <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50 dark:bg-slate-800/20">
                     <div>
                         <h3 class="font-bold text-slate-900 dark:text-white text-base">Recent Extractions</h3>
                         <p class="text-[11px] text-slate-500 mt-0.5">Documents processed by AI awaiting final human reconciliation</p>
@@ -382,6 +392,15 @@
             }
         }
 
+        // Mobile Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // Auth Logic
         function handleLogin() {
             const btn = document.querySelector('#authGate button');
             btn.innerHTML = `<svg class="w-4 h-4 animate-spin inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h5M20 20v-5h-5M5.4 9A7 7 0 0117 6.3M18.6 15A7 7 0 017 17.7"/></svg> Verifying...`;
@@ -392,6 +411,22 @@
                 gate.style.opacity = '0';
                 setTimeout(() => { gate.style.display = 'none'; }, 400); 
             }, 800); 
+        }
+
+        function handleLogout() {
+            const gate = document.getElementById('authGate');
+            const btn = document.querySelector('#authGate button');
+            
+            btn.innerHTML = `Sign In to Dashboard`;
+            btn.disabled = false;
+            gate.style.display = 'flex';
+            setTimeout(() => { gate.style.opacity = '1'; }, 10);
+            
+            // Close mobile sidebar if open
+            if (window.innerWidth < 1024) {
+                const sidebar = document.getElementById('sidebar');
+                if (!sidebar.classList.contains('-translate-x-full')) toggleSidebar();
+            }
         }
     </script>
 </body>
