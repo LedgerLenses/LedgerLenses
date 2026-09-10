@@ -109,7 +109,7 @@
 
     <div class="bg-mesh"></div>
 
-    <!-- ARCHITECTURAL SIDEBAR -->
+    <!-- SIDEBAR -->
     <aside class="w-64 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col z-20 shrink-0">
         <div class="h-16 flex items-center px-6 border-b border-slate-100 dark:border-slate-800">
             <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-brand-700 rounded-lg flex items-center justify-center mr-2.5 shadow-sm shadow-brand-500/20">
@@ -121,21 +121,31 @@
         <div class="flex-1 overflow-y-auto py-6 px-4 space-y-1.5">
             <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Core Workflow</p>
             
-            <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            <!-- 1. The Overview (INACTIVE) -->
+            <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                 Dashboard
             </a>
             
-            <a href="#" class="flex items-center justify-between px-3 py-2.5 bg-brand-50/80 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400 rounded-lg font-semibold transition-colors">
+            <!-- 2. The Workspace (ACTIVE) -->
+            <a href="reconciliation.html" class="flex items-center justify-between px-3 py-2.5 bg-brand-50/80 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400 rounded-lg font-semibold transition-colors">
                 <div class="flex items-center gap-3">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                     Reconciliation Desk
                 </div>
+                <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 flex items-center justify-center text-[10px] font-bold">2</span>
             </a>
 
+            <!-- 3. The Archive (INACTIVE) -->
             <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 Document Ledger
+            </a>
+            
+            <!-- 4. Security/Compliance (INACTIVE) -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Audit Trail
             </a>
         </div>
 
