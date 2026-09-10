@@ -82,7 +82,6 @@
         }
         .dark #authGate { background: rgba(15, 23, 42, 0.95); }
 
-        /* Sidebar transition for desktop collapse */
         #sidebar { transition: margin 0.3s ease-in-out, transform 0.3s ease-in-out; }
         .sidebar-collapsed { margin-left: -16rem; }
     </style>
@@ -119,6 +118,18 @@
         </div>
     </div>
 
+    <!-- PREVIEW MODAL -->
+    <div id="previewModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4 transition-opacity" onclick="closePreviewModal()">
+        <div class="bg-white dark:bg-slate-900 rounded-xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700" onclick="event.stopPropagation()">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+                <h3 id="modalTitle" class="font-bold text-slate-900 dark:text-white truncate pr-4">Document Preview</h3>
+                <button onclick="closePreviewModal()" class="text-slate-500 hover:text-rose-500 transition-colors p-1 bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            <div class="p-4 flex-1 overflow-auto flex items-center justify-center bg-slate-100/50 dark:bg-slate-900/50" id="modalContent">
+            </div>
+        </div>
+    </div>
+
     <!-- MOBILE OVERLAY -->
     <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleSidebar()"></div>
 
@@ -131,7 +142,6 @@
                 </div>
                 <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">LedgerLenses</span>
             </div>
-            <!-- Mobile Close Button -->
             <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -186,7 +196,6 @@
         
         <header class="h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-8 shrink-0">
             <div class="flex items-center gap-3 w-full max-w-md">
-                <!-- Universal Hamburger Menu -->
                 <button onclick="toggleSidebar()" class="p-2 -ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
@@ -216,6 +225,7 @@
                 </button>
             </div>
 
+            <!-- DYNAMIC KPI GRID -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div class="panel p-5 kpi-card flex flex-col justify-between h-32">
                     <div class="flex items-center justify-between">
@@ -364,22 +374,18 @@
             }
         }
 
-        // Universal Sidebar Toggle (Desktop & Mobile)
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             
             if (window.innerWidth >= 1024) {
-                // Desktop toggle
                 sidebar.classList.toggle('sidebar-collapsed');
             } else {
-                // Mobile toggle
                 sidebar.classList.toggle('-translate-x-full');
                 overlay.classList.toggle('hidden');
             }
         }
 
-        // Auth Logic with SessionStorage
         function handleLogin() {
             const btn = document.querySelector('#authGate button');
             btn.innerHTML = `<svg class="w-4 h-4 animate-spin inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h5M20 20v-5h-5M5.4 9A7 7 0 0117 6.3M18.6 15A7 7 0 017 17.7"/></svg> Verifying...`;
@@ -395,7 +401,29 @@
 
         function handleLogout() {
             sessionStorage.removeItem('isLoggedIn');
-            window.location.href = 'index.html'; // Force reload to show auth gate
+            window.location.href = 'index.html'; 
+        }
+
+        // Preview Modal Functions
+        function openPreviewModal(dataUrl, fileName) {
+            if (!dataUrl) {
+                alert("Storage Failsafe Triggered: To prevent browser memory crashes during the demo, the heavy image payload for this file was stripped from LocalStorage.");
+                return;
+            }
+            document.getElementById('previewModal').classList.remove('hidden');
+            document.getElementById('modalTitle').innerText = fileName;
+            const content = document.getElementById('modalContent');
+            content.innerHTML = '';
+            if(dataUrl.startsWith('data:application/pdf')) {
+                content.innerHTML = `<embed src="${dataUrl}" type="application/pdf" class="w-full h-[70vh] rounded shadow-sm" />`;
+            } else {
+                content.innerHTML = `<img src="${dataUrl}" class="max-w-full max-h-[70vh] rounded object-contain shadow-sm" />`;
+            }
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.add('hidden');
+            document.getElementById('modalContent').innerHTML = '';
         }
 
         // ==========================================
@@ -404,10 +432,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             const savedDocs = JSON.parse(localStorage.getItem('ledgerDocs')) || [];
             
-            // Update Volume KPI
             document.getElementById('kpiVolume').innerText = savedDocs.length;
             
-            // Calculate and Update Total Value KPI
             let totalValue = 0;
             savedDocs.forEach(doc => {
                 totalValue += parseFloat(doc.total) || 0;
@@ -419,9 +445,7 @@
             });
             document.getElementById('kpiValue').innerText = '₹ ' + formattedTotal;
 
-            // Update Graphs based on Volume
             if (savedDocs.length > 0) {
-                // Data exists: Show "96% Confidence" visuals
                 document.getElementById('donutText').innerText = '96%';
                 setTimeout(() => {
                     document.getElementById('donutRing1').style.strokeDasharray = '220 314';
@@ -431,10 +455,9 @@
                     document.getElementById('barApprove').style.width = '75%';
                     document.getElementById('barPending').style.width = '15%';
                     document.getElementById('barReject').style.width = '5%';
-                }, 100); // Slight delay for animation
+                }, 100); 
             }
 
-            // Populate Table
             const tbody = document.getElementById('dashboardTableBody');
             const emptyState = document.getElementById('emptyDashboardRow');
             
@@ -442,7 +465,7 @@
                 emptyState.style.display = 'none';
             }
 
-            savedDocs.forEach((data, index) => {
+            savedDocs.forEach((data) => {
                 const row = document.createElement('tr');
                 row.className = "hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors";
                 
@@ -456,7 +479,7 @@
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 rounded bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
                             <div>
-                                <p class="font-semibold text-slate-900 dark:text-slate-200">Doc_${1000 + index}.pdf</p>
+                                <a href="#" onclick="openPreviewModal('${data.fileDataUrl || ''}', '${data.fileName}'); return false;" class="font-semibold text-brand-600 dark:text-brand-400 hover:underline cursor-pointer truncate max-w-[150px] inline-block" title="View Document">${data.fileName}</a>
                                 <p class="text-[10px] font-mono text-slate-400 mt-0.5">${data.invoiceNo}</p>
                             </div>
                         </div>
