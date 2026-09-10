@@ -103,17 +103,57 @@
             z-index: 20;
             display: none;
         }
+
+        #authGate {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(16px);
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.4s ease;
+        }
+        .dark #authGate { background: rgba(15, 23, 42, 0.95); }
+
+        /* Sidebar transition for desktop collapse */
+        #sidebar { transition: margin 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        .sidebar-collapsed { margin-left: -16rem; }
     </style>
 </head>
 <body class="antialiased flex h-screen overflow-hidden text-sm">
 
     <div class="bg-mesh"></div>
 
+    <!-- AUTHENTICATION GATE (Failsafe for direct link sharing) -->
+    <div id="authGate">
+        <div class="panel p-8 max-w-sm w-full mx-4 relative overflow-hidden shadow-2xl">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-cyan-400"></div>
+            <div class="flex flex-col items-center mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 mb-3">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                </div>
+                <span class="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">LedgerLenses</span>
+                <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Authorized Access Only</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Work Email</label>
+                    <input type="email" value="sravani.m@ledgerlenses.in" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Password</label>
+                    <input type="password" value="********" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-slate-900 dark:bg-brand-600 hover:bg-brand-600 dark:hover:bg-brand-500 text-white font-semibold py-3 rounded-lg transition-colors mt-2 shadow-md hover:shadow-lg">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MOBILE OVERLAY -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleSidebar()"></div>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 lg:relative transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 lg:relative">
         <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100 dark:border-slate-800">
             <div class="flex items-center">
                 <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-brand-700 rounded-lg flex items-center justify-center mr-2.5 shadow-sm shadow-brand-500/20">
@@ -121,7 +161,6 @@
                 </div>
                 <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">LedgerLenses</span>
             </div>
-            <!-- Mobile Close Button -->
             <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -130,13 +169,11 @@
         <div class="flex-1 overflow-y-auto py-6 px-4 space-y-1.5">
             <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Core Workflow</p>
             
-            <!-- 1. The Overview (INACTIVE) -->
             <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                 Dashboard
             </a>
             
-            <!-- 2. The Workspace (ACTIVE) -->
             <a href="reconciliation.html" class="flex items-center justify-between px-3 py-2.5 bg-brand-50/80 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400 rounded-lg font-semibold transition-colors">
                 <div class="flex items-center gap-3">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -145,14 +182,13 @@
                 <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 flex items-center justify-center text-[10px] font-bold">2</span>
             </a>
 
-            <!-- 3. The Archive (INACTIVE) -->
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
+            <!-- ENTERPRISE LOCKED MODULES -->
+            <a href="#" onclick="alert('This module is locked in the MVP phase. Available in Enterprise deployment.'); return false;" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 Document Ledger
             </a>
             
-            <!-- 4. Security/Compliance (INACTIVE) -->
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
+            <a href="#" onclick="alert('This module is locked in the MVP phase. Available in Enterprise deployment.'); return false;" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Audit Trail
             </a>
@@ -167,8 +203,7 @@
                     <p class="text-xs font-bold text-slate-900 dark:text-slate-100">Sravani M.</p>
                     <p class="text-[10px] text-brand-600 dark:text-brand-400 font-semibold uppercase tracking-wider">Accountant</p>
                 </div>
-                <!-- Logout Button -->
-                <button onclick="window.location.href='index.html'" class="text-slate-400 hover:text-rose-500 transition-colors ml-auto p-1" title="Log Out">
+                <button onclick="handleLogout()" class="text-slate-400 hover:text-rose-500 transition-colors ml-auto p-1" title="Log Out">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                 </button>
             </div>
@@ -179,8 +214,8 @@
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
         <header class="h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-8 shrink-0">
             <div class="flex items-center gap-3 w-full max-w-md">
-                <!-- Hamburger Menu -->
-                <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
+                <!-- Universal Hamburger Menu -->
+                <button onclick="toggleSidebar()" class="p-2 -ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div class="relative w-full">
@@ -367,6 +402,11 @@
     </main>
 
     <script>
+        // Check Auth State instantly
+        if (sessionStorage.getItem('isLoggedIn') === 'true') {
+            document.getElementById('authGate').style.display = 'none';
+        }
+
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
@@ -381,12 +421,37 @@
             }
         }
 
-        // Mobile Sidebar Toggle
+        // Universal Sidebar Toggle (Desktop & Mobile)
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
+            
+            if (window.innerWidth >= 1024) {
+                // Desktop toggle
+                sidebar.classList.toggle('sidebar-collapsed');
+            } else {
+                // Mobile toggle
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            }
+        }
+
+        function handleLogin() {
+            const btn = document.querySelector('#authGate button');
+            btn.innerHTML = `<svg class="w-4 h-4 animate-spin inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h5M20 20v-5h-5M5.4 9A7 7 0 0117 6.3M18.6 15A7 7 0 017 17.7"/></svg> Verifying...`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                const gate = document.getElementById('authGate');
+                gate.style.opacity = '0';
+                setTimeout(() => { gate.style.display = 'none'; }, 400); 
+            }, 800); 
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'index.html'; // Force reload to show auth gate
         }
 
         let documentLoaded = false;
@@ -579,6 +644,13 @@
 
             const row = document.createElement('tr');
             row.className = "hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors";
+            
+            // Format total
+            const rowTotal = parseFloat(data.total).toLocaleString('en-IN', {
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2
+            });
+
             row.innerHTML = `
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
@@ -590,7 +662,7 @@
                     </div>
                 </td>
                 <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-medium">${data.vendor}</td>
-                <td class="px-6 py-4 font-mono font-bold text-slate-900 dark:text-slate-100">₹ ${data.total}</td>
+                <td class="px-6 py-4 font-mono font-bold text-slate-900 dark:text-slate-100">₹ ${rowTotal}</td>
                 <td class="px-6 py-4">
                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">
                         Synced
