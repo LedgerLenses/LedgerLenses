@@ -71,7 +71,7 @@
         .dark .kpi-card:hover { box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5); border-color: #4f46e5; }
         .kpi-active { border-color: #6366f1 !important; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important; }
 
-        .donut-ring { fill: transparent; stroke-width: 14; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .donut-ring { fill: transparent; stroke-width: 14; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dasharray 1s ease-in-out; }
 
         #authGate {
             position: fixed; inset: 0; z-index: 9999;
@@ -81,6 +81,10 @@
             transition: opacity 0.4s ease;
         }
         .dark #authGate { background: rgba(15, 23, 42, 0.95); }
+
+        /* Sidebar transition for desktop collapse */
+        #sidebar { transition: margin 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        .sidebar-collapsed { margin-left: -16rem; }
     </style>
 </head>
 <body class="antialiased flex h-screen overflow-hidden text-sm">
@@ -116,10 +120,10 @@
     </div>
 
     <!-- MOBILE OVERLAY -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleSidebar()"></div>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 lg:relative transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 lg:relative">
         <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100 dark:border-slate-800">
             <div class="flex items-center">
                 <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-brand-700 rounded-lg flex items-center justify-center mr-2.5 shadow-sm shadow-brand-500/20">
@@ -127,6 +131,7 @@
                 </div>
                 <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">LedgerLenses</span>
             </div>
+            <!-- Mobile Close Button -->
             <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -148,12 +153,13 @@
                 <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 flex items-center justify-center text-[10px] font-bold">2</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
+            <!-- ENTERPRISE LOCKED MODULES -->
+            <a href="#" onclick="alert('This module is locked in the MVP phase. Available in Enterprise deployment.'); return false;" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 Document Ledger
             </a>
             
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
+            <a href="#" onclick="alert('This module is locked in the MVP phase. Available in Enterprise deployment.'); return false;" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Audit Trail
             </a>
@@ -180,7 +186,8 @@
         
         <header class="h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-8 shrink-0">
             <div class="flex items-center gap-3 w-full max-w-md">
-                <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
+                <!-- Universal Hamburger Menu -->
+                <button onclick="toggleSidebar()" class="p-2 -ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div class="relative w-full">
@@ -209,7 +216,6 @@
                 </button>
             </div>
 
-            <!-- DYNAMIC KPI GRID -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div class="panel p-5 kpi-card flex flex-col justify-between h-32">
                     <div class="flex items-center justify-between">
@@ -221,7 +227,7 @@
                         <p class="text-[10px] text-slate-400 mt-1">Processed this session</p>
                     </div>
                 </div>
-                <div class="panel p-5 kpi-card bg-brand-50/30 dark:bg-brand-900/10 flex flex-col justify-between h-32">
+                <div class="panel p-5 kpi-card kpi-active bg-brand-50/30 dark:bg-brand-900/10 flex flex-col justify-between h-32">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-brand-700 dark:text-brand-400">Pending Sign-off</span>
                         <div class="w-7 h-7 rounded-md bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center"><svg class="w-4 h-4 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
@@ -247,13 +253,13 @@
                         <div class="w-7 h-7 rounded-md bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
                     </div>
                     <div>
-                        <span id="kpiValue" class="text-2xl font-bold text-slate-900 dark:text-white font-mono tracking-tight">₹ 0.00</span>
+                        <span id="kpiValue" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-mono tracking-tight">₹ 0.00</span>
                         <p class="text-[10px] font-bold text-emerald-600 dark:text-emerald-500 mt-1">Approved for ledger</p>
                     </div>
                 </div>
             </div>
 
-            <!-- STATIC VISUALIZATIONS -->
+            <!-- DYNAMIC VISUALIZATIONS -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 <div class="panel p-6">
                     <div class="flex items-center justify-between mb-4">
@@ -264,12 +270,13 @@
                     </div>
                     <div class="flex items-center justify-center relative h-40">
                         <svg class="w-32 h-32" viewBox="0 0 100 100">
-                            <circle class="donut-ring" stroke="#10b981" stroke-dasharray="220 314" stroke-dashoffset="0" cx="50" cy="50" r="40" />
-                            <circle class="donut-ring" stroke="#f59e0b" stroke-dasharray="63 314" stroke-dashoffset="-220" cx="50" cy="50" r="40" />
-                            <circle class="donut-ring" stroke="#f43f5e" stroke-dasharray="31 314" stroke-dashoffset="-283" cx="50" cy="50" r="40" />
+                            <!-- Dasharrays set dynamically by JS -->
+                            <circle id="donutRing1" class="donut-ring" stroke="#10b981" stroke-dasharray="0 314" stroke-dashoffset="0" cx="50" cy="50" r="40" />
+                            <circle id="donutRing2" class="donut-ring" stroke="#f59e0b" stroke-dasharray="0 314" stroke-dashoffset="-220" cx="50" cy="50" r="40" />
+                            <circle id="donutRing3" class="donut-ring" stroke="#f43f5e" stroke-dasharray="0 314" stroke-dashoffset="-283" cx="50" cy="50" r="40" />
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-xl font-bold text-slate-900 dark:text-white">96%</span>
+                            <span id="donutText" class="text-xl font-bold text-slate-900 dark:text-white">0%</span>
                             <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Avg Acc</span>
                         </div>
                     </div>
@@ -288,15 +295,15 @@
                     <div class="flex flex-col justify-center space-y-4 mt-8 pl-16 border-l border-slate-200 dark:border-slate-700">
                         <div class="relative w-full">
                             <span class="absolute -left-16 top-1 text-[9px] font-bold text-slate-500 w-14 text-right uppercase tracking-wider">Approved</span>
-                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div class="bg-emerald-500 h-full rounded" style="width: 75%"></div></div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div id="barApprove" class="bg-emerald-500 h-full rounded transition-all duration-1000" style="width: 0%"></div></div>
                         </div>
                         <div class="relative w-full">
                             <span class="absolute -left-16 top-1 text-[9px] font-bold text-slate-500 w-14 text-right uppercase tracking-wider">Pending</span>
-                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div class="bg-amber-500 h-full rounded" style="width: 15%"></div></div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div id="barPending" class="bg-amber-500 h-full rounded transition-all duration-1000" style="width: 0%"></div></div>
                         </div>
                         <div class="relative w-full">
                             <span class="absolute -left-16 top-1 text-[9px] font-bold text-slate-500 w-14 text-right uppercase tracking-wider">Rejected</span>
-                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div class="bg-rose-500 h-full rounded" style="width: 5%"></div></div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-5 rounded overflow-hidden"><div id="barReject" class="bg-rose-500 h-full rounded transition-all duration-1000" style="width: 0%"></div></div>
                         </div>
                     </div>
                 </div>
@@ -338,6 +345,11 @@
     </main>
 
     <script>
+        // Check Auth State instantly on load to prevent flashing
+        if (sessionStorage.getItem('isLoggedIn') === 'true') {
+            document.getElementById('authGate').style.display = 'none';
+        }
+
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
@@ -352,21 +364,29 @@
             }
         }
 
-        // Mobile Sidebar Toggle
+        // Universal Sidebar Toggle (Desktop & Mobile)
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
+            
+            if (window.innerWidth >= 1024) {
+                // Desktop toggle
+                sidebar.classList.toggle('sidebar-collapsed');
+            } else {
+                // Mobile toggle
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            }
         }
 
-        // Auth Logic
+        // Auth Logic with SessionStorage
         function handleLogin() {
             const btn = document.querySelector('#authGate button');
             btn.innerHTML = `<svg class="w-4 h-4 animate-spin inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h5M20 20v-5h-5M5.4 9A7 7 0 0117 6.3M18.6 15A7 7 0 017 17.7"/></svg> Verifying...`;
             btn.disabled = true;
 
             setTimeout(() => {
+                sessionStorage.setItem('isLoggedIn', 'true');
                 const gate = document.getElementById('authGate');
                 gate.style.opacity = '0';
                 setTimeout(() => { gate.style.display = 'none'; }, 400); 
@@ -374,23 +394,12 @@
         }
 
         function handleLogout() {
-            const gate = document.getElementById('authGate');
-            const btn = document.querySelector('#authGate button');
-            
-            btn.innerHTML = `Sign In to Dashboard`;
-            btn.disabled = false;
-            gate.style.display = 'flex';
-            setTimeout(() => { gate.style.opacity = '1'; }, 10);
-            
-            // Close mobile sidebar if open
-            if (window.innerWidth < 1024) {
-                const sidebar = document.getElementById('sidebar');
-                if (!sidebar.classList.contains('-translate-x-full')) toggleSidebar();
-            }
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'index.html'; // Force reload to show auth gate
         }
 
         // ==========================================
-        // DYNAMIC LOCALSTORAGE DASHBOARD LOGIC
+        // DYNAMIC LOCALSTORAGE & GRAPHS LOGIC
         // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
             const savedDocs = JSON.parse(localStorage.getItem('ledgerDocs')) || [];
@@ -410,6 +419,21 @@
             });
             document.getElementById('kpiValue').innerText = '₹ ' + formattedTotal;
 
+            // Update Graphs based on Volume
+            if (savedDocs.length > 0) {
+                // Data exists: Show "96% Confidence" visuals
+                document.getElementById('donutText').innerText = '96%';
+                setTimeout(() => {
+                    document.getElementById('donutRing1').style.strokeDasharray = '220 314';
+                    document.getElementById('donutRing2').style.strokeDasharray = '63 314';
+                    document.getElementById('donutRing3').style.strokeDasharray = '31 314';
+                    
+                    document.getElementById('barApprove').style.width = '75%';
+                    document.getElementById('barPending').style.width = '15%';
+                    document.getElementById('barReject').style.width = '5%';
+                }, 100); // Slight delay for animation
+            }
+
             // Populate Table
             const tbody = document.getElementById('dashboardTableBody');
             const emptyState = document.getElementById('emptyDashboardRow');
@@ -422,7 +446,6 @@
                 const row = document.createElement('tr');
                 row.className = "hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors";
                 
-                // Formatting the total for the table row
                 const rowTotal = parseFloat(data.total).toLocaleString('en-IN', {
                     minimumFractionDigits: 2, 
                     maximumFractionDigits: 2
