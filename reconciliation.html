@@ -202,7 +202,7 @@
             <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Core Workflow</p>
             
             <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                 Dashboard
             </a>
             
@@ -214,7 +214,6 @@
                 <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 flex items-center justify-center text-[10px] font-bold">2</span>
             </a>
 
-            <!-- ENTERPRISE LOCKED MODULES -->
             <a href="#" onclick="alert('This module is locked in the MVP phase. Available in Enterprise deployment.'); return false;" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50 rounded-lg font-medium transition-colors">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 Document Ledger
@@ -247,16 +246,14 @@
         
         <header class="h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-8 shrink-0">
             <div class="flex items-center gap-3 w-full max-w-md">
-                <!-- Modern Desktop Sidebar Toggle -->
                 <button onclick="toggleSidebar()" class="p-2 -ml-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M9 3v18"/></svg>
                 </button>
                 <div class="relative w-full">
                     <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input type="text" placeholder="Search..." class="w-full bg-slate-100/80 dark:bg-slate-800/80 border-none rounded-lg pl-10 pr-4 py-2 text-xs focus:ring-2 focus:ring-brand-500/30 outline-none text-slate-700 dark:text-slate-300 transition-shadow">
+                    <input type="text" placeholder="Search..." class="w-full bg-slate-100/80 dark:bg-slate-800/80 border-none rounded-lg pl-10 pr-4 py-2 text-xs outline-none text-slate-700 dark:text-slate-300">
                 </div>
             </div>
-            
             <div class="flex items-center gap-2">
                 <button onclick="toggleTheme()" class="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
                     <svg class="w-4 h-4 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
@@ -392,7 +389,7 @@
                     </div>
 
                     <div class="border-t border-slate-200 dark:border-slate-800 p-4 bg-slate-50/80 dark:bg-slate-900/80 flex justify-end gap-3">
-                        <button class="px-4 py-2 rounded-lg text-sm font-semibold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Reject</button>
+                        <button id="rejectBtn" disabled class="px-4 py-2 rounded-lg text-sm font-semibold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors opacity-50 cursor-not-allowed">Reject</button>
                         <button id="approveBtn" disabled class="bg-brand-600 text-white px-6 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 opacity-50 cursor-not-allowed hover:bg-brand-700 transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Approve & Sync
                         </button>
@@ -539,8 +536,11 @@
         function resetForm() {
             document.getElementById('formOverlay').classList.remove('hidden');
             document.getElementById('anomalyBox').classList.add('hidden');
+            
             document.getElementById('approveBtn').disabled = true;
             document.getElementById('approveBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('rejectBtn').disabled = true;
+            document.getElementById('rejectBtn').classList.add('opacity-50', 'cursor-not-allowed');
             
             ['Vendor', 'Date', 'InvoiceNo', 'Gstin', 'Subtotal', 'Tax', 'Total'].forEach(field => {
                 document.getElementById(`field${field}`).value = '';
@@ -641,8 +641,12 @@
                 const data = await response.json();
 
                 document.getElementById('formOverlay').classList.add('hidden');
+                
+                // Unlock Action Buttons
                 document.getElementById('approveBtn').disabled = false;
                 document.getElementById('approveBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+                document.getElementById('rejectBtn').disabled = false;
+                document.getElementById('rejectBtn').classList.remove('opacity-50', 'cursor-not-allowed');
 
                 document.getElementById('fieldVendor').value = data.vendor_name || "";
                 document.getElementById('fieldDate').value = data.invoice_date || "";
@@ -680,12 +684,24 @@
         // ==========================================
         window.addEventListener('DOMContentLoaded', renderTable);
 
+        // Approve Logic
         document.getElementById('approveBtn').addEventListener('click', function() {
-            const btn = this;
-            const originalText = btn.innerHTML;
+            processDocument(this, 'approved');
+        });
+
+        // Reject Logic
+        document.getElementById('rejectBtn').addEventListener('click', function() {
+            processDocument(this, 'rejected');
+        });
+
+        function processDocument(btnElement, status) {
+            const originalText = btnElement.innerHTML;
+            const isApproved = status === 'approved';
             
-            btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h5M20 20v-5h-5M5.4 9A7 7 0 0117 6.3M18.6 15A7 7 0 017 17.7"/></svg> Syncing to Ledger...`;
-            btn.disabled = true;
+            btnElement.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h5M20 20v-5h-5M5.4 9A7 7 0 0117 6.3M18.6 15A7 7 0 017 17.7"/></svg> ${isApproved ? 'Syncing...' : 'Rejecting...'}`;
+            
+            document.getElementById('approveBtn').disabled = true;
+            document.getElementById('rejectBtn').disabled = true;
 
             const docData = {
                 fileName: currentFileName,
@@ -696,7 +712,8 @@
                 subtotal: document.getElementById('fieldSubtotal').value || "0.00",
                 tax: document.getElementById('fieldTax').value || "0.00",
                 total: document.getElementById('fieldTotal').value || "0.00",
-                date: document.getElementById('fieldDate').value || new Date().toISOString().split('T')[0]
+                date: document.getElementById('fieldDate').value || new Date().toISOString().split('T')[0],
+                status: status
             };
 
             setTimeout(() => {
@@ -714,11 +731,13 @@
                     }
                 }
 
+                if(!isApproved) alert("Document Rejected. It has been logged in the audit trail but will not be processed for payment.");
+                
                 renderTable();
                 clearDocument(new Event('click'));
-                btn.innerHTML = originalText;
-            }, 800);
-        });
+                btnElement.innerHTML = originalText;
+            }, 600);
+        }
 
         function renderTable() {
             const tbody = document.getElementById('extractionTableBody');
@@ -740,10 +759,17 @@
                     maximumFractionDigits: 2
                 });
 
+                // Render dynamic pill based on status
+                const statusPill = data.status === 'rejected' 
+                    ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-800 text-[10px] font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wide"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg> Rejected</span>`
+                    : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Synced</span>`;
+
                 row.innerHTML = `
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                            <div class="w-8 h-8 rounded ${data.status === 'rejected' ? 'bg-rose-50 dark:bg-rose-500/10' : 'bg-emerald-50 dark:bg-emerald-500/10'} flex items-center justify-center">
+                                <svg class="w-4 h-4 ${data.status === 'rejected' ? 'text-rose-500' : 'text-emerald-500'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${data.status === 'rejected' ? 'M6 18L18 6M6 6l12 12' : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'}"/></svg>
+                            </div>
                             <div>
                                 <a href="#" onclick="openPreviewModal('${data.fileDataUrl || ''}', '${data.fileName}'); return false;" class="font-semibold text-brand-600 dark:text-brand-400 hover:underline cursor-pointer truncate max-w-[150px] inline-block" title="View Document">${data.fileName}</a>
                                 <p class="text-[10px] font-mono text-slate-400 mt-0.5">${data.invoiceNo}</p>
@@ -753,9 +779,7 @@
                     <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-medium">${data.vendor}</td>
                     <td class="px-6 py-4 font-mono font-bold text-slate-900 dark:text-slate-100">₹ ${rowTotal}</td>
                     <td class="px-6 py-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Clean
-                        </span>
+                        ${statusPill}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <button onclick="openReviewModal(${index})" class="px-3 py-1.5 rounded text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-all flex items-center gap-1.5 ml-auto">
