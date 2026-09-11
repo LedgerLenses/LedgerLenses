@@ -246,6 +246,7 @@
                 </button>
             </div>
 
+            <!-- DYNAMIC KPI GRID -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div class="panel p-5 kpi-card flex flex-col justify-between h-32">
                     <div class="flex items-center justify-between">
@@ -274,7 +275,7 @@
                     </div>
                     <div>
                         <span id="kpiFlagged" class="text-3xl font-bold text-slate-900 dark:text-white">0</span>
-                        <p class="text-[10px] text-slate-400 mt-1">Mathematical mismatches</p>
+                        <p class="text-[10px] text-slate-400 mt-1">Rejected logic workflows</p>
                     </div>
                 </div>
                 <div class="panel p-5 kpi-card flex flex-col justify-between h-32">
@@ -289,6 +290,7 @@
                 </div>
             </div>
 
+            <!-- DYNAMIC VISUALIZATIONS -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 <div class="panel p-6">
                     <div class="flex items-center justify-between mb-4">
@@ -299,10 +301,8 @@
                     </div>
                     <div class="flex items-center justify-center relative h-40">
                         <svg class="w-32 h-32" viewBox="0 0 100 100">
-                            <!-- Dasharrays set dynamically by JS -->
                             <circle id="donutRing1" class="donut-ring" stroke="#10b981" stroke-dasharray="0 314" stroke-dashoffset="0" cx="50" cy="50" r="40" />
-                            <circle id="donutRing2" class="donut-ring" stroke="#f59e0b" stroke-dasharray="0 314" stroke-dashoffset="-220" cx="50" cy="50" r="40" />
-                            <circle id="donutRing3" class="donut-ring" stroke="#f43f5e" stroke-dasharray="0 314" stroke-dashoffset="-283" cx="50" cy="50" r="40" />
+                            <circle id="donutRing3" class="donut-ring" stroke="#f43f5e" stroke-dasharray="0 314" stroke-dashoffset="0" cx="50" cy="50" r="40" />
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span id="donutText" class="text-xl font-bold text-slate-900 dark:text-white">0%</span>
@@ -311,7 +311,6 @@
                     </div>
                     <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-5 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                         <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-[10px] font-bold text-slate-500">High Confidence</span></div>
-                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="text-[10px] font-bold text-slate-500">Needs Review</span></div>
                         <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="text-[10px] font-bold text-slate-500">Flagged</span></div>
                     </div>
                 </div>
@@ -476,44 +475,77 @@
         // ==========================================
         // DYNAMIC LOCALSTORAGE & GRAPHS LOGIC
         // ==========================================
-        function renderTable() {
+        window.addEventListener('DOMContentLoaded', () => {
             const savedDocs = JSON.parse(localStorage.getItem('ledgerDocs')) || [];
             
-            document.getElementById('kpiVolume').innerText = savedDocs.length;
+            const totalVolume = savedDocs.length;
+            document.getElementById('kpiVolume').innerText = totalVolume;
+            
             let totalValue = 0;
-            savedDocs.forEach(doc => totalValue += parseFloat(doc.total) || 0);
-            document.getElementById('kpiValue').innerText = '₹ ' + totalValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            let approvedCount = 0;
+            let rejectedCount = 0;
 
-            if (savedDocs.length > 0) {
-                document.getElementById('donutText').innerText = '96%';
+            savedDocs.forEach(doc => {
+                if (doc.status === 'rejected') {
+                    rejectedCount++;
+                } else {
+                    approvedCount++;
+                    totalValue += parseFloat(doc.total) || 0;
+                }
+            });
+            
+            document.getElementById('kpiValue').innerText = '₹ ' + totalValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('kpiFlagged').innerText = rejectedCount;
+
+            // Pipeline Graph Logic
+            if (totalVolume > 0) {
+                const pctApproved = Math.round((approvedCount / totalVolume) * 100);
+                const pctRejected = Math.round((rejectedCount / totalVolume) * 100);
+                
+                document.getElementById('donutText').innerText = pctApproved + '%';
+                
                 setTimeout(() => {
-                    document.getElementById('donutRing1').style.strokeDasharray = '220 314';
-                    document.getElementById('donutRing2').style.strokeDasharray = '63 314';
-                    document.getElementById('donutRing3').style.strokeDasharray = '31 314';
-                    document.getElementById('barApprove').style.width = '75%';
-                    document.getElementById('barPending').style.width = '15%';
-                    document.getElementById('barReject').style.width = '5%';
+                    const dashApprove = (pctApproved / 100) * 314;
+                    const dashReject = (pctRejected / 100) * 314;
+                    
+                    document.getElementById('donutRing1').style.strokeDasharray = `${dashApprove} 314`;
+                    
+                    const ring3 = document.getElementById('donutRing3');
+                    ring3.style.strokeDasharray = `${dashReject} 314`;
+                    ring3.style.strokeDashoffset = `-${dashApprove}`;
+                    
+                    document.getElementById('barApprove').style.width = pctApproved + '%';
+                    document.getElementById('barPending').style.width = '0%';
+                    document.getElementById('barReject').style.width = pctRejected + '%';
                 }, 100); 
             }
 
             const tbody = document.getElementById('dashboardTableBody');
-            if(!tbody) return;
+            const emptyState = document.getElementById('emptyDashboardRow');
             
-            if (savedDocs.length === 0) {
-                tbody.innerHTML = `<tr id="emptyDashboardRow"><td colspan="5" class="px-6 py-8 text-center text-slate-400 dark:text-slate-500 font-medium">No documents processed in this session.</td></tr>`;
-                return;
+            if (savedDocs.length > 0 && emptyState) {
+                emptyState.style.display = 'none';
             }
 
-            tbody.innerHTML = ''; // Clear and rebuild
             savedDocs.forEach((data, index) => {
                 const row = document.createElement('tr');
                 row.className = "hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors";
-                const rowTotal = parseFloat(data.total).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2});
+                
+                const rowTotal = parseFloat(data.total).toLocaleString('en-IN', {
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2
+                });
+
+                const statusPill = data.status === 'rejected' 
+                    ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-800 text-[10px] font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wide"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg> Rejected</span>`
+                    : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Synced</span>`;
 
                 row.innerHTML = `
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                            <div class="w-8 h-8 rounded ${data.status === 'rejected' ? 'bg-rose-50 dark:bg-rose-500/10' : 'bg-emerald-50 dark:bg-emerald-500/10'} flex items-center justify-center">
+                                <svg class="w-4 h-4 ${data.status === 'rejected' ? 'text-rose-500' : 'text-emerald-500'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${data.status === 'rejected' ? 'M6 18L18 6M6 6l12 12' : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'}"/></svg>
+                            </div>
                             <div>
                                 <a href="#" onclick="openPreviewModal('${data.fileDataUrl || ''}', '${data.fileName}'); return false;" class="font-semibold text-brand-600 dark:text-brand-400 hover:underline cursor-pointer truncate max-w-[150px] inline-block" title="View Document">${data.fileName}</a>
                                 <p class="text-[10px] font-mono text-slate-400 mt-0.5">${data.invoiceNo}</p>
@@ -523,9 +555,7 @@
                     <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-medium">${data.vendor}</td>
                     <td class="px-6 py-4 font-mono font-bold text-slate-900 dark:text-slate-100">₹ ${rowTotal}</td>
                     <td class="px-6 py-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Clean
-                        </span>
+                        ${statusPill}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <button onclick="openReviewModal(${index})" class="px-3 py-1.5 rounded text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-all flex items-center gap-1.5 ml-auto">
@@ -536,9 +566,7 @@
                 `;
                 tbody.appendChild(row);
             });
-        }
-
-        window.addEventListener('DOMContentLoaded', renderTable);
+        });
     </script>
 </body>
 </html>
